@@ -3,6 +3,7 @@ class Mahasiswa extends Controller
 {
     public function __construct()
     {
+
         if ($_SESSION['session_login'] != 'sudah_login') {
             Flasher::setMessage('Login', 'Tidak ditemukan.', 'danger');
             header('location: ' . base_url . '/login');
@@ -23,8 +24,7 @@ class Mahasiswa extends Controller
     public function tambah()
     {
         $data['title'] = 'Tambah Mahasiswa';
-        // Load data fakultas dan program studi untuk dropdown
-        $data['fakultas'] = $this->model('MahasiswaModel')->getAllFakultas();
+        $data['program_studi'] = $this->model('ProgramStudiModel')->getAllProgramStudi();
         $this->view('templates/header', $data);
         $this->view('templates/sidebar', $data);
         $this->view('mahasiswa/create', $data);
@@ -46,10 +46,9 @@ class Mahasiswa extends Controller
 
     public function edit($id)
     {
-        $data['title'] = 'Detail Mahasiswa';
+        $data['title'] = 'Edit Mahasiswa';
         $data['mahasiswa'] = $this->model('MahasiswaModel')->getMahasiswaById($id);
-        // Load data fakultas dan program studi untuk dropdown
-        $data['fakultas'] = $this->model('MahasiswaModel')->getAllFakultas();
+        $data['program_studi'] = $this->model('ProgramStudiModel')->getAllProgramStudi();
         $this->view('templates/header', $data);
         $this->view('templates/sidebar', $data);
         $this->view('mahasiswa/edit', $data);
@@ -82,11 +81,15 @@ class Mahasiswa extends Controller
         }
     }
 
-    public function lihatLaporan()
+    public function cari()
     {
-        $data['title'] = 'Data Laporan Mahasiswa';
-        $data['mahasiswa'] = $this->model('MahasiswaModel')->getAllMahasiswa();
-        $this->view('mahasiswa/lihatlaporan', $data);
+        $data['title'] = 'Data Mahasiswa';
+        $data['mahasiswa'] = $this->model('MahasiswaModel')->cariMahasiswa();
+        $data['key'] = $_POST['key'];
+        $this->view('templates/header', $data);
+        $this->view('templates/sidebar', $data);
+        $this->view('mahasiswa/index', $data);
+        $this->view('templates/footer');
     }
 
     public function laporan()
@@ -114,12 +117,26 @@ class Mahasiswa extends Controller
         foreach ($data['mahasiswa'] as $row) {
             $pdf->Cell(40, 6, $row['Nama'], 1);
             $pdf->Cell(40, 6, $row['Alamat'], 1);
-            $pdf->Cell(30, 6, $row['TanggalLahir'], 1);
+            $pdf->Cell(30, 6, date('d-m-Y', strtotime($row['TanggalLahir'])), 1);
             $pdf->Cell(30, 6, $row['JenisKelamin'], 1);
             $pdf->Cell(40, 6, $row['NamaProgram'], 1);
             $pdf->Ln();
         }
 
         $pdf->Output('I', 'Laporan Mahasiswa.pdf', true);
+    }
+
+    public function lihatlaporan()
+    {
+        $data['title'] = 'Data Laporan Mahasiswa';
+        $data['mahasiswa'] = $this->model('MahasiswaModel')->getAllMahasiswa();
+        $this->view('mahasiswa/lihatlaporan', $data);
+    }
+
+    public function laporanjumlahmhs()
+    {
+        $data['title'] = 'Laporan Jumlah Mahasiswa per Program Studi';
+        $data['laporan'] = $this->model('MahasiswaModel')->getJumlahMahasiswaPerProgramStudi();
+        $this->view('mahasiswa/laporanjumlahmhs', $data);
     }
 }

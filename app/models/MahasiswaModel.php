@@ -11,61 +11,90 @@ class MahasiswaModel
 
     public function getAllMahasiswa()
     {
-        // Mengambil semua data mahasiswa beserta nama program studi
-        $this->db->query('SELECT mahasiswa.*, programstudi.NamaProgram FROM ' . $this->table . ' JOIN programstudi ON programstudi.ProgramStudiID = mahasiswa.ProgramStudiID');
-
+        $this->db->query('SELECT mahasiswa.*, programstudi.NamaProgram, fakultas.NamaFakultas 
+                          FROM ' . $this->table . ' 
+                          JOIN programstudi ON programstudi.ProgramStudiID = mahasiswa.ProgramStudiID 
+                          JOIN fakultas ON fakultas.FakultasID = programstudi.FakultasID');
         return $this->db->resultSet();
     }
 
     public function getMahasiswaById($id)
     {
-        // Mengambil data mahasiswa berdasarkan ID
         $this->db->query('SELECT * FROM ' . $this->table . ' WHERE MahasiswaID=:id');
         $this->db->bind('id', $id);
-
         return $this->db->single();
     }
 
     public function tambahMahasiswa($data)
     {
-        // Menambahkan data mahasiswa ke dalam database
-        $query = "INSERT INTO mahasiswa(Nama, Alamat, TanggalLahir, JenisKelamin, KontakDarurat, ProgramStudiID) VALUES (:nama, :alamat, :tanggal_lahir, :jenis_kelamin, :kontak_darurat, :program_studi)";
+        $query = "INSERT INTO mahasiswa(Nama, Alamat, TanggalLahir, JenisKelamin, KontakDarurat, ProgramStudiID) 
+                  VALUES (:nama, :alamat, :tanggal_lahir, :jenis_kelamin, :kontak_darurat, :program_studi_id)";
         $this->db->query($query);
-        $this->db->bind('nama', $data['Nama']);
-        $this->db->bind('alamat', $data['Alamat']);
-        $this->db->bind('tanggal_lahir', $data['TanggalLahir']);
-        $this->db->bind('jenis_kelamin', $data['JenisKelamin']);
-        $this->db->bind('kontak_darurat', $data['KontakDarurat']);
-        $this->db->bind('program_studi', $data['ProgramStudiID']);
+        $this->db->bind('nama', $data['nama']);
+        $this->db->bind('alamat', $data['alamat']);
+        $this->db->bind('tanggal_lahir', $data['tanggal_lahir']);
+        $this->db->bind('jenis_kelamin', $data['jenis_kelamin']);
+        $this->db->bind('kontak_darurat', $data['kontak_darurat']);
+        $this->db->bind('program_studi_id', $data['program_studi_id']);
         $this->db->execute();
-
         return $this->db->rowCount();
     }
 
-    public function updateMahasiswa($data)
+    public function updateDataMahasiswa($data)
     {
-        // Memperbarui data mahasiswa berdasarkan ID
-        $query = "UPDATE mahasiswa SET Nama=:nama, Alamat=:alamat, TanggalLahir=:tanggal_lahir, JenisKelamin=:jenis_kelamin, KontakDarurat=:kontak_darurat, ProgramStudiID=:program_studi WHERE MahasiswaID=:id";
+        $query = "UPDATE mahasiswa SET 
+                  Nama = :nama, Alamat = :alamat, TanggalLahir = :tanggal_lahir, 
+                  JenisKelamin = :jenis_kelamin, KontakDarurat = :kontak_darurat, ProgramStudiID = :program_studi_id 
+                  WHERE MahasiswaID = :id";
         $this->db->query($query);
-        $this->db->bind('id', $data['MahasiswaID']);
-        $this->db->bind('nama', $data['Nama']);
-        $this->db->bind('alamat', $data['Alamat']);
-        $this->db->bind('tanggal_lahir', $data['TanggalLahir']);
-        $this->db->bind('jenis_kelamin', $data['JenisKelamin']);
-        $this->db->bind('kontak_darurat', $data['KontakDarurat']);
-        $this->db->bind('program_studi', $data['ProgramStudiID']);
+        $this->db->bind('id', $data['id']);
+        $this->db->bind('nama', $data['nama']);
+        $this->db->bind('alamat', $data['alamat']);
+        $this->db->bind('tanggal_lahir', $data['tanggal_lahir']);
+        $this->db->bind('jenis_kelamin', $data['jenis_kelamin']);
+        $this->db->bind('kontak_darurat', $data['kontak_darurat']);
+        $this->db->bind('program_studi_id', $data['program_studi_id']);
         $this->db->execute();
-
         return $this->db->rowCount();
     }
 
     public function deleteMahasiswa($id)
     {
-        // Menghapus data mahasiswa berdasarkan ID
-        $this->db->query('DELETE FROM ' . $this->table . ' WHERE MahasiswaID=:id');
+
+
+        $this->db->query('DELETE FROM mahasiswa WHERE MahasiswaID = :id');
         $this->db->bind('id', $id);
         $this->db->execute();
 
         return $this->db->rowCount();
+    }
+
+
+
+    public function cariMahasiswa()
+    {
+        $key = $_POST['key'];
+        $this->db->query('SELECT mahasiswa.*, programstudi.NamaProgram, fakultas.NamaFakultas 
+                          FROM ' . $this->table . ' 
+                          JOIN programstudi ON programstudi.ProgramStudiID = mahasiswa.ProgramStudiID 
+                          JOIN fakultas ON fakultas.FakultasID = programstudi.FakultasID 
+                          WHERE Nama LIKE :key');
+        $this->db->bind('key', "%$key%");
+        return $this->db->resultSet();
+    }
+
+    public function getAllFakultas()
+    {
+        $this->db->query('SELECT * FROM fakultas');
+        return $this->db->resultSet();
+    }
+
+    public function getJumlahMahasiswaPerProgramStudi()
+    {
+        $this->db->query('SELECT programstudi.NamaProgram, COUNT(mahasiswa.MahasiswaID) as JumlahMahasiswa 
+                          FROM mahasiswa 
+                          JOIN programstudi ON mahasiswa.ProgramStudiID = programstudi.ProgramStudiID 
+                          GROUP BY programstudi.NamaProgram');
+        return $this->db->resultSet();
     }
 }
