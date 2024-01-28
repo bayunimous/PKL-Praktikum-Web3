@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Laporan Buku</title>
+    <title>Laporan Jumlah Dosen</title>
 
     <!-- Normalize or reset CSS with your favorite library -->
     <link rel="stylesheet" href="<?= base_url ?>/dist/js/normalize.min.css">
@@ -28,6 +28,8 @@
 
         h1 {
             font-size: 16px;
+            text-decoration: underline;
+            margin-top: 20px;
         }
 
         * {
@@ -68,30 +70,22 @@
     <!-- Each sheet element should have the class "sheet" -->
     <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
     <section class="sheet padding-15mm">
-        <h1 class="center" style="text-decoration: underline;margin-top: 20px;"><?= $data['title'] ?></h1>
+        <h1 class="center"><?= $data['title'] ?></h1>
         <table class="table">
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
-                    <th>Nama Dosen</th>
-                    <th>Alamat</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Kontak</th>
-                    <th>Program Studi</th>
+                    <th>Nama Program Studi</th>
+                    <th>Jumlah Dosen</th>
                 </tr>
             </thead>
             <tbody>
                 <?php $no = 1; ?>
-                <?php foreach ($data['dosen'] as $row) : ?>
+                <?php foreach ($data['laporan'] as $row) : ?>
                     <tr>
                         <td><?= $no; ?></td>
-                        <td><?= $row['Nama']; ?></td>
-                        <td><?= $row['Alamat']; ?></td>
-                        <td><?= date('d-m-Y', strtotime($row['TanggalLahir'])); ?></td>
-                        <td><?= $row['JenisKelamin']; ?></td>
-                        <td><?= $row['Kontak']; ?></td>
                         <td><?= $row['NamaProgram']; ?></td>
+                        <td><?= $row['JumlahDosen']; ?></td>
                     </tr>
                 <?php $no++;
                 endforeach; ?>

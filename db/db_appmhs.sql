@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 28, 2024 at 06:37 AM
+-- Generation Time: Jan 28, 2024 at 10:06 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -33,19 +33,25 @@ CREATE TABLE `dosen` (
   `Alamat` varchar(255) DEFAULT NULL,
   `TanggalLahir` date DEFAULT NULL,
   `JenisKelamin` enum('Laki-laki','Perempuan') DEFAULT NULL,
-  `Kontak` varchar(20) DEFAULT NULL
+  `Kontak` varchar(20) DEFAULT NULL,
+  `ProgramStudiID` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `dosen`
 --
 
-INSERT INTO `dosen` (`DosenID`, `Nama`, `Alamat`, `TanggalLahir`, `JenisKelamin`, `Kontak`) VALUES
-(1, 'Dr. John Doe', 'Jl. Merdeka No. 123', '1975-08-15', 'Laki-laki', '08123456789'),
-(2, 'Prof. Jane Doe', 'Jl. Kebangsaan No. 456', '1978-03-25', 'Perempuan', '08234567890'),
-(3, 'Dr. Michael Smith', 'Jl. Pelajar No. 789', '1980-11-10', 'Laki-laki', '08345678901'),
-(4, 'Prof. Emily Johnson', 'Jl. Pahlawan No. 234', '1972-06-20', 'Perempuan', '08456789012'),
-(5, 'Dr. William Brown', 'Jl. Patriot No. 567', '1977-09-05', 'Laki-laki', '08567890123');
+INSERT INTO `dosen` (`DosenID`, `Nama`, `Alamat`, `TanggalLahir`, `JenisKelamin`, `Kontak`, `ProgramStudiID`) VALUES
+(21, 'Dr. John Does', 'Jl. Merdeka No. 123', '1975-08-15', 'Laki-laki', '08123456789', 1),
+(22, 'Prof. Jane Doe', 'Jl. Kebangsaan No. 456', '1978-03-25', 'Perempuan', '08234567890', 2),
+(23, 'Dr. Michael Smith', 'Jl. Pelajar No. 789', '1980-11-10', 'Laki-laki', '08345678901', 3),
+(24, 'Prof. Emily Johnson', 'Jl. Pahlawan No. 234', '1972-06-20', 'Perempuan', '08456789012', 4),
+(25, 'Dr. William Brown', 'Jl. Patriot No. 567', '1977-09-05', 'Laki-laki', '08567890123', 5),
+(26, 'Dr. Sarah Clark', 'Jl. Medan Merdeka No. 789', '1982-05-12', 'Perempuan', '08678901234', 1),
+(27, 'Prof. David Wilson', 'Jl. Kemang No. 123', '1974-10-30', 'Laki-laki', '08789012345', 2),
+(28, 'Dr. Jennifer Lee', 'Jl. Cipete No. 456', '1979-12-15', 'Perempuan', '08890123456', 3),
+(29, 'Prof. Daniel Martinez', 'Jl. Sudirman No. 789', '1971-04-28', 'Laki-laki', '08901234567', 4),
+(30, 'Dr. Maria Garcia', 'Jl. Thamrin No. 123', '1985-03-08', 'Perempuan', '09012345678', 5);
 
 -- --------------------------------------------------------
 
@@ -192,7 +198,8 @@ INSERT INTO `riwayatregistrasi` (`RegistrasiID`, `MahasiswaID`, `TahunAjaran`, `
 -- Indexes for table `dosen`
 --
 ALTER TABLE `dosen`
-  ADD PRIMARY KEY (`DosenID`);
+  ADD PRIMARY KEY (`DosenID`),
+  ADD KEY `fk_programstudi_id` (`ProgramStudiID`);
 
 --
 -- Indexes for table `fakultas`
@@ -243,7 +250,7 @@ ALTER TABLE `riwayatregistrasi`
 -- AUTO_INCREMENT for table `dosen`
 --
 ALTER TABLE `dosen`
-  MODIFY `DosenID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `DosenID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `fakultas`
@@ -284,6 +291,12 @@ ALTER TABLE `riwayatregistrasi`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `dosen`
+--
+ALTER TABLE `dosen`
+  ADD CONSTRAINT `fk_programstudi_id` FOREIGN KEY (`ProgramStudiID`) REFERENCES `programstudi` (`ProgramStudiID`);
 
 --
 -- Constraints for table `mahasiswa`
