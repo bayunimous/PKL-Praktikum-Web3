@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 15, 2024 at 01:04 PM
+-- Generation Time: Jan 28, 2024 at 05:11 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -65,11 +65,9 @@ CREATE TABLE `mahasiswa` (
 --
 
 INSERT INTO `mahasiswa` (`MahasiswaID`, `Nama`, `Alamat`, `TanggalLahir`, `JenisKelamin`, `KontakDarurat`, `ProgramStudiID`) VALUES
-(1, 'Mahasiswa 1', 'Alamat 1', '1995-05-10', 'Laki-Laki', 'Kontak 1', 1),
-(2, 'Mahasiswa 2', 'Alamat 2', '1996-07-15', 'Perempuan', 'Kontak 2', 2),
 (3, 'Mahasiswa 3', 'Alamat 3', '1997-03-20', 'Laki-Laki', 'Kontak 3', 1),
 (4, 'Mahasiswa 4', 'Alamat 4', '1998-09-25', 'Perempuan', 'Kontak 4', 3),
-(5, 'Mahasiswa 5', 'Alamat 5', '1999-01-30', 'Laki-Laki', 'Kontak 5', 2);
+(8, 'Bayu Nugraha', 'Jl. Belitung Darat', '2001-02-06', 'Laki-Laki', '0821212', 1);
 
 -- --------------------------------------------------------
 
@@ -91,11 +89,7 @@ CREATE TABLE `pengguna` (
 --
 
 INSERT INTO `pengguna` (`UserID`, `NamaPengguna`, `KataSandi`, `Email`, `Peran`, `MahasiswaID`) VALUES
-(6, 'user1', 'password1', 'user1@email.com', 'Mahasiswa', 1),
-(7, 'user2', 'password2', 'user2@email.com', 'Dosen', NULL),
-(8, 'admin1', 'adminpass1', 'admin1@email.com', 'Admin', NULL),
-(9, 'user3', 'password3', 'user3@email.com', 'Mahasiswa', 2),
-(10, 'user4', 'password4', 'user4@email.com', 'Mahasiswa', 3);
+(8, 'admin', 'a6ec3d77a094eed7d1f817f65872c23a', 'admin@email.com', 'Admin', NULL);
 
 -- --------------------------------------------------------
 
@@ -116,11 +110,8 @@ CREATE TABLE `perubahandatamahasiswa` (
 --
 
 INSERT INTO `perubahandatamahasiswa` (`PerubahanID`, `MahasiswaID`, `TanggalPerubahan`, `JenisPerubahan`, `DetailPerubahan`) VALUES
-(1, 1, '2023-03-15', 'Perubahan Alamat', 'Alamat diubah menjadi Alamat Baru 1'),
-(2, 2, '2023-02-20', 'Perubahan Jurusan', 'Jurusan diubah menjadi Jurusan Baru 2'),
 (3, 3, '2023-01-10', 'Perubahan Alamat', 'Alamat diubah menjadi Alamat Baru 3'),
-(4, 4, '2023-04-05', 'Perubahan Jurusan', 'Jurusan diubah menjadi Jurusan Baru 4'),
-(5, 5, '2023-05-25', 'Perubahan Alamat', 'Alamat diubah menjadi Alamat Baru 5');
+(4, 4, '2023-04-05', 'Perubahan Jurusan', 'Jurusan diubah menjadi Jurusan Baru 4');
 
 -- --------------------------------------------------------
 
@@ -164,11 +155,8 @@ CREATE TABLE `riwayatregistrasi` (
 --
 
 INSERT INTO `riwayatregistrasi` (`RegistrasiID`, `MahasiswaID`, `TahunAjaran`, `Semester`, `MataKuliahID`) VALUES
-(1, 1, 2022, 'Ganjil', 101),
-(2, 2, 2022, 'Ganjil', 102),
 (3, 3, 2022, 'Ganjil', 103),
-(4, 4, 2022, 'Ganjil', 104),
-(5, 5, 2022, 'Ganjil', 105);
+(4, 4, 2022, 'Ganjil', 104);
 
 --
 -- Indexes for dumped tables
@@ -229,7 +217,7 @@ ALTER TABLE `fakultas`
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `MahasiswaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `MahasiswaID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `pengguna`
@@ -269,12 +257,13 @@ ALTER TABLE `mahasiswa`
 -- Constraints for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  ADD CONSTRAINT `pengguna_ibfk_1` FOREIGN KEY (`MahasiswaID`) REFERENCES `mahasiswa` (`MahasiswaID`);
+  ADD CONSTRAINT `pengguna_ibfk_1` FOREIGN KEY (`MahasiswaID`) REFERENCES `mahasiswa` (`MahasiswaID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `perubahandatamahasiswa`
 --
 ALTER TABLE `perubahandatamahasiswa`
+  ADD CONSTRAINT `fk_mahasiswa_id` FOREIGN KEY (`MahasiswaID`) REFERENCES `mahasiswa` (`MahasiswaID`) ON DELETE CASCADE,
   ADD CONSTRAINT `perubahandatamahasiswa_ibfk_1` FOREIGN KEY (`MahasiswaID`) REFERENCES `mahasiswa` (`MahasiswaID`);
 
 --
@@ -287,7 +276,7 @@ ALTER TABLE `programstudi`
 -- Constraints for table `riwayatregistrasi`
 --
 ALTER TABLE `riwayatregistrasi`
-  ADD CONSTRAINT `riwayatregistrasi_ibfk_1` FOREIGN KEY (`MahasiswaID`) REFERENCES `mahasiswa` (`MahasiswaID`);
+  ADD CONSTRAINT `riwayatregistrasi_ibfk_1` FOREIGN KEY (`MahasiswaID`) REFERENCES `mahasiswa` (`MahasiswaID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
