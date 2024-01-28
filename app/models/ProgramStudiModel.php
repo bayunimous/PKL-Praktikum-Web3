@@ -13,13 +13,14 @@ class ProgramStudiModel
     public function getAllProgramStudi()
     {
         $query = 'SELECT programstudi.*, fakultas.NamaFakultas 
-                  FROM programstudi
+                  FROM ' . $this->table . ' 
                   LEFT JOIN fakultas ON programstudi.FakultasID = fakultas.FakultasID';
 
         $this->db->query($query);
 
         return $this->db->resultSet();
     }
+
 
     public function getProgramStudiById($id)
     {

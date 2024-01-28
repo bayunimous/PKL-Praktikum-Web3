@@ -24,6 +24,13 @@
                 <h3 class="card-title"><?= $data['title'] ?></h3>
                 <div class="btn-group float-right">
                     <a href="<?= base_url; ?>/dosen/tambah" class="btn btn-primary mr-2">Tambah Dosen</a>
+                    <a href="<?= base_url; ?>/dosen/laporan" class="btn btn-danger mr-2">Laporan Dosen</a>
+                    <div class="btn-group mr-2">
+                        <a href="<?= base_url; ?>/dosen/lihatlaporan" class="btn btn-warning" target="_blank">Lihat Laporan Dosen</a>
+                    </div>
+                    <div class="btn-group">
+                        <a href="<?= base_url; ?>/dosen/laporanjumlahdosen" class="btn btn-success" target="_blank">Lihat Laporan Jumlah Dosen</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -35,7 +42,7 @@
                             <th>Alamat</th>
                             <th>Tanggal Lahir</th>
                             <th>Jenis Kelamin</th>
-                            <th>Kontak</th>
+                            <th>Program Studi</th>
                             <th style="width:150px">Action</th>
                         </tr>
                     </thead>
@@ -48,7 +55,7 @@
                                 <td><?= $row['Alamat']; ?></td>
                                 <td><?= date('d-m-Y', strtotime($row['TanggalLahir'])) ?></td>
                                 <td><?= $row['JenisKelamin']; ?></td>
-                                <td><?= $row['Kontak']; ?></td>
+                                <td><?= $row['NamaProgram']; ?></td>
                                 <td>
                                     <a href="<?= base_url; ?>/dosen/edit/<?= $row['DosenID'] ?>" class="btn btn-info btn-sm">Edit</a>
                                     <a href="<?= base_url; ?>/dosen/hapus/<?= $row['DosenID'] ?>" class="btn btn-danger btn-sm ml-2" onclick="return confirm('Hapus data?');">Hapus</a>
