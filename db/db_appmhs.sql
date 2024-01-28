@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 28, 2024 at 05:11 AM
+-- Generation Time: Jan 28, 2024 at 06:37 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_appmhs`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dosen`
+--
+
+CREATE TABLE `dosen` (
+  `DosenID` int NOT NULL,
+  `Nama` varchar(100) NOT NULL,
+  `Alamat` varchar(255) DEFAULT NULL,
+  `TanggalLahir` date DEFAULT NULL,
+  `JenisKelamin` enum('Laki-laki','Perempuan') DEFAULT NULL,
+  `Kontak` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `dosen`
+--
+
+INSERT INTO `dosen` (`DosenID`, `Nama`, `Alamat`, `TanggalLahir`, `JenisKelamin`, `Kontak`) VALUES
+(1, 'Dr. John Doe', 'Jl. Merdeka No. 123', '1975-08-15', 'Laki-laki', '08123456789'),
+(2, 'Prof. Jane Doe', 'Jl. Kebangsaan No. 456', '1978-03-25', 'Perempuan', '08234567890'),
+(3, 'Dr. Michael Smith', 'Jl. Pelajar No. 789', '1980-11-10', 'Laki-laki', '08345678901'),
+(4, 'Prof. Emily Johnson', 'Jl. Pahlawan No. 234', '1972-06-20', 'Perempuan', '08456789012'),
+(5, 'Dr. William Brown', 'Jl. Patriot No. 567', '1977-09-05', 'Laki-laki', '08567890123');
 
 -- --------------------------------------------------------
 
@@ -163,6 +189,12 @@ INSERT INTO `riwayatregistrasi` (`RegistrasiID`, `MahasiswaID`, `TahunAjaran`, `
 --
 
 --
+-- Indexes for table `dosen`
+--
+ALTER TABLE `dosen`
+  ADD PRIMARY KEY (`DosenID`);
+
+--
 -- Indexes for table `fakultas`
 --
 ALTER TABLE `fakultas`
@@ -206,6 +238,12 @@ ALTER TABLE `riwayatregistrasi`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `dosen`
+--
+ALTER TABLE `dosen`
+  MODIFY `DosenID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `fakultas`

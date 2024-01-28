@@ -88,13 +88,4 @@ class MahasiswaModel
         $this->db->query('SELECT * FROM fakultas');
         return $this->db->resultSet();
     }
-
-    public function getJumlahMahasiswaPerProgramStudi()
-    {
-        $this->db->query('SELECT programstudi.NamaProgram, COUNT(mahasiswa.MahasiswaID) as JumlahMahasiswa 
-                          FROM mahasiswa 
-                          JOIN programstudi ON mahasiswa.ProgramStudiID = programstudi.ProgramStudiID 
-                          GROUP BY programstudi.NamaProgram');
-        return $this->db->resultSet();
-    }
 }
